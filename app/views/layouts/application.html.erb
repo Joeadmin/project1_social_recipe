@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Project1SocialRecipe</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body
+  <!-- Static navbar -->
+  <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menubar-collapse">
+          	<span class="icon-bar"></span>
+          	<span class="icon-bar"></span>
+          	<span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="<%= root_path %>">
+          	<%= image_tag "recipe_logo.jpg", :size => "80x50" %>
+        </a>      
+      </div>
+      <div class="collapse navbar-collapse" id="menubar-collapse">
+        <ul class="nav navbar-nav">
+      	  <li class="active"><%= link_to "Recipes", recipes_path %> </li>
+        </ul>
+
+      	<ul class="nav navbar-nav pull-right">
+      	  <% if user_signed_in? %>
+      	    <li><%= link_to "#{current_user.email}" %></li>  
+		    <li><%= link_to "Logout", destroy_user_session_path, method: :delete, :class => "btn btn-default" %></li>
+		  <% else %>
+		    <li><%= link_to "Login", new_user_session_path, :class => "btn btn-default" %></li>
+		    <li><%= link_to "SignUp", new_user_registration_path, :class => "btn btn-default" %></li>
+		  <% end %>
+      	</ul>
+      </div> <!-- .nav-collapse -->
+	</div> <!-- End of container -->
+  </div>
+  <% if flash[:notice] %>
+	<div class="alert alert-success" role="alert">
+	  <div class="container">
+	    <p class="notice"><%= flash[:notice] %></p>	    
+	  </div>
+	</div>
+  <% end %>
+  <% if flash[:flash] %>
+	<div class="alert alert-success" role="alert">
+	  <div class="container">
+	    <p class="flash"><%= flash[:flash] %> </p>  
+	  </div>
+	</div>
+  <% end %>
+
+  <div class="site_body">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2">
+          <div class="panel panel-primary" id="panels">
+            <div class="panel-heading">Food Preferences</div>
+            <% @food_preferences.each do |fp| %>
+             <div class="panel-body">
+              <%= link_to fp.name, recipes_path(food_preference_id: fp.id) %>
+             </div> 
+            <% end %>            
+
+          </div>
+
+          <div class="panel panel-primary" id="panels">
+            <div class="panel-heading">Food Types</div>
+            <% @food_types.each do |fp| %>
+             <div class="panel-body">
+              <%= link_to fp.name, recipes_path(food_type_id: fp.id) %>
+             </div> 
+            <% end %> 
+          </div>
+
+          <div class="panel panel-primary" id="panels">
+            <div class="panel-heading">Cuisines</div>
+            <% @cuisines.each do |fp| %>
+             <div class="panel-body">
+              <%= link_to fp.name, recipes_path(cuisine_id: fp.id) %>
+             </div> 
+            <% end %> 
+          </div>
+
+        </div>	
+        <div class="col-lg-9">
+          <%= yield %>
+        </div>
+
+      </div> 
+    </div>
+
+  </div>	
+
+</body>
+</html>
+
